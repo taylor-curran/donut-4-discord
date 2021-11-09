@@ -8,6 +8,12 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
+intents = discord.Intents.default()
+intents.members = True
+
+intents = discord.Intents()
+intents.all()
+
 client = discord.Client()
 
 @client.event
@@ -21,7 +27,10 @@ async def on_ready():
         f'{guild.name}(id: {guild.id})\n'
     )
 
+
     members = '\n - '.join([member.name for member in guild.members])
+    mem = [member.name for member in guild.members]
     print(f'Guild Members:\n - {members}')
+    print(mem)
 
 client.run(TOKEN)
