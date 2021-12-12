@@ -19,6 +19,7 @@ def get_pairs(members):
         pair = rand1, rand2
         pairs.append(pair)
 
+    # If odd number, peyton gets 2 meetings
     if len(members) == 1 and members[0] != 'peyton':
         pairs.append((members[0], 'peyton'))
 
