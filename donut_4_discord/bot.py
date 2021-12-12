@@ -34,11 +34,18 @@ client = discord.Client(intents=intents)
 async def on_ready(): # At Bot Startup
     print('\nWe have logged in as {0.user}\n'.format(client))
     guild = client.guilds[0]
+    print("HEREEE", client.guilds[0])
 
-    print(
-        f'\n{client.user} is connected to the following guild.',
-        f'\n{guild.name}(id: {guild.id})'
-    )
+# This is not working but I think I need to use await in order to use .chunk()...
+# I'm just not sure how to use await
+
+    # if 'taylor_staging' == 'taylor_staging':
+    #     await print(guild.chunk())
+    #
+    # print(
+    #     f'\n{client.user} is connected to the following guild.',
+    #     f'\n{guild.name}(id: {guild.id})'
+    # )
 
 @client.event
 async def on_message(message): # A bot that responds to messages
