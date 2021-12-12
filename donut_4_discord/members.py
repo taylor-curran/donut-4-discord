@@ -1,26 +1,34 @@
 import pandas as pd
-import numpy as np
+import random
+
+
+def pop_random(lst):
+    idx = random.randrange(0, len(lst))
+    return lst.pop(idx)
 
 def get_pairs(members):
 
-    df = pd.DataFrame({'members': members})
-    df_rand = df.sample(frac=1)
-    # reset index
-
-    odd = [i for i in df.index if i % 2 != 0]
-    even = [i for i in df.index if i % 2 == 0]
-
     pairs = []
-    for i in range(len(odd)):
+    print("HERE", members)
+    while len(members) > 1:
+        rand1 = pop_random(members)
+        print(rand1)
+        rand2 = pop_random(members)
+        print(rand2)
+        pair = rand1, rand2
+        pairs.append(pair)
 
-        # DUH AttributeError: 'list' object has no attribute 'iloc'
-        pairs.append([.iloc[i], even.iloc[i]])
+    if members:
+        pairs.append((members[0], 'peyton'))
 
     return pairs
 
 
+if __name__ == '__main__':
+    toy_members = ['tay', 'joe', 'mo', 'tier', 'alex', 'caro', 'grant']
+    toy_df = pd.DataFrame({'members': toy_members})
 
-toy_df = df = pd.DataFrame({'members': ['tay', 'joe', 'mo', 'tier', 'alex']})
+    out = get_pairs(toy_members)
 
 
 
