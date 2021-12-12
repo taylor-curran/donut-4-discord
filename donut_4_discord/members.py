@@ -8,6 +8,8 @@ def pop_random(lst):
 
 def get_pairs(members):
 
+    members.remove('🍩🤖')
+
     pairs = []
     print("HERE", members)
     while len(members) > 1:
@@ -18,7 +20,7 @@ def get_pairs(members):
         pair = rand1, rand2
         pairs.append(pair)
 
-    if members:
+    if len(members) == 1 and members[0] != 'peyton':
         pairs.append((members[0], 'peyton'))
 
     return pairs

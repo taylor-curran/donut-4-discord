@@ -2,6 +2,7 @@ import discord
 import os
 from dotenv import load_dotenv
 import logging
+from members import get_pairs
 
 # Get Logging Working
 logging.basicConfig(level=logging.INFO)
@@ -24,12 +25,6 @@ intents.guilds = True
 # Instantiate Client
 client = discord.Client(intents=intents)
 
-# TODO
-# Me trying to figure out how to instantiate Guild so I can
-# can use Guild.chunk() to get a list returned of all users
-# client.get_guild()
-# This is not working but I think I need to use await in order to use .chunk()...
-
 @client.event
 async def on_ready(): # At Bot Startup
     print('\nWe have logged in as {0.user}\n'.format(client))
@@ -49,7 +44,11 @@ async def on_ready(): # At Bot Startup
 
     members = [member.name for member in guild.members]
 
-    # Random Function Here
+    pairs = get_pairs(members)
+
+    print('PAIRS: ', pairs)
+
+
 
 @client.event
 async def on_message(message): # A bot that responds to messages
@@ -61,8 +60,3 @@ async def on_message(message): # A bot that responds to messages
 
 # Run Client
 client.run(TOKEN)
-
-# At this point in the tutorial:
-# Great! You can see the name of your bot,
-
-# https://realpython.com/how-to-make-a-discord-bot-python/
