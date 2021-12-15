@@ -58,5 +58,10 @@ async def on_message(message): # A bot that responds to messages
     if message.content.startswith('Donut?'):
         await message.channel.send("I'm here!")
 
+    if message.content.startswith('Make matches!'):
+        await message.channel.send("OK!")
+
+
+
 # Run Client
 client.run(TOKEN)

@@ -7,10 +7,11 @@ def pop_random(lst):
 
 def get_pairs(members):
 
-    members.remove('🍩🤖')
+    if '🍩🤖' in members:
+        members.remove('🍩🤖')
 
     pairs = []
-    print("HERE", members)
+    print("MEMBERS", members)
     while len(members) > 1:
         rand1 = pop_random(members)
         print(rand1)
@@ -27,10 +28,10 @@ def get_pairs(members):
 
 
 if __name__ == '__main__':
-    toy_members = ['tay', 'joe', 'mo', 'tier', 'alex', 'caro', 'grant']
-    toy_df = pd.DataFrame({'members': toy_members})
+    toy_members = ['tay', 'joe', 'mo', 'tier', 'alex', 'caro', 'grant', 'peyton', 'kate']
 
     out = get_pairs(toy_members)
+    print("OUT", out)
 
 
 
