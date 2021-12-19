@@ -16,6 +16,10 @@ logger.addHandler(handler)
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
+BOT_NAME = os.getenv('BOT_NAME')
+BOT_USER_ID = int(os.getenv('BOT_USER_ID'))
+ADMIN_NAME = os.getenv('ADMIN_NAME')
+ADMIN_USER_ID = int(os.getenv('ADMIN_USER_ID'))
 
 # Intents
 intents = discord.Intents.default()
@@ -38,16 +42,12 @@ async def on_ready(): # At Bot Startup
     members_print = '\n -'.join([member.name for member in guild.members])
     print(f'Guild Members:\n - {members_print}')
 
-    members_ids = [(member.name, member.id) for member in guild.members]
+    members_names_ids = [(member.name, member.id) for member in guild.members]
 
-    members = [member.name for member in guild.members]
-
-    for member_id in members_ids:
+    for member_id in members_names_ids:
         print(member_id)
 
-    pairs = get_pairs(members)
-
-    print('PAIRS: ', pairs)
+# TODO: How to identify which users are in a channel.
 
 # Talk to Donut
 @client.event
@@ -58,18 +58,72 @@ async def on_message(message): # A bot that responds to messages
     if message.content.startswith('Donut?'):
         await message.channel.send("I'm here!")
 
+    if message.content.startswith('get matches'):
+        await message.channel.send("On it..")
+
+        guild = discord.utils.get(client.guilds, name=GUILD)
+
+        members_names_ids = [(member.name, member.id) for member in guild.members]
+
+        pairs = get_pairs(members_names_ids)
+
+        # Prettify Pairs
+        pairs_names = []
+        for i in range(len(pairs)):
+            print('i', pairs[i])
+            pair_names = []
+            for j in range(2):
+                print('ij', pairs[i][j])
+                pair_names.append(pairs[i][j][0])
+            pairs_names.append(list(pair_names))
+
+        await message.channel.send("-- PAIRS --")
+
+        for pair in pairs_names:
+            await message.channel.send(pair)
+
     if message.content.startswith('Make matches!'):
         await message.channel.send("OK!")
 
         guild = discord.utils.get(client.guilds, name=GUILD)
-        member = guild.get_member(764571782912802858)
-        await member.create_dm()
-        await member.dm_channel.send(
-            f'Hi {member.name}, welcome to my Discord server!'
-        )
+
+        members_names_ids = [(member.name, member.id) for member in guild.members]
+
+        pairs = get_pairs(members_names_ids)
+
+        # Send the pairs to admin.
+        # Prettify Pairs
+        pairs_names = []
+        for i in range(len(pairs)):
+            pair_names = []
+            for j in range(2):
+                pair_names.append(pairs[i][j][0])
+            pairs_names.append(list(pair_names))
+
+        # Temporarily Override Admin User to be me for testing
+        ADMIN_USER_ID = 752348190027808911
+
+        admin_member = guild.get_member(ADMIN_USER_ID)
+        await admin_member.create_dm()
+        await admin_member.dm_channel.send("-- PAIRS --")
+
+        for pair in pairs_names:
+            await admin_member.dm_channel.send(pair)
+
+        # TODO: Add capability to message multiple people or create a new channel of 2 + donut user
+
+        # Now notify those that are paired:
+        # member_a = guild.get_member(752348190027808911)
+        # member_b = guild.get_member(681586949836111935)
+        # await member_a.create_dm()
+        # await member_a.dm_channel.send(
+        #     f"Hi {member_a.name}, you've been matched with **{member_b.name}** for a donut chat!"
+        # )
+        # await member_b.create_dm()
+        # await member_b.dm_channel.send(
+        #     f"Hi {member_b.name}, you've been matched with {member_a.name} for a donut chat!"
+        # )
 
 
 # Run Client
 client.run(TOKEN)
-
-# ('taycurran', 752348190027808911)
